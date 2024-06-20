@@ -20,6 +20,7 @@ public class GamePanel extends JPanel implements ActionListener {
 	boolean running = false;
 	Timer timer;
 	Random random;
+	boolean gameOverHandled = false;
 
 	GamePanel() {
 		random = new Random();
@@ -44,10 +45,10 @@ public class GamePanel extends JPanel implements ActionListener {
 
 	public void draw(Graphics g) {
 		if (running) {
-			for (int i = 0; i < SCREEN_HEIGHT / UNIT_SIZE; i++) {
-				g.drawLine(i * UNIT_SIZE, 0, i * UNIT_SIZE, SCREEN_HEIGHT);
-				g.drawLine(0, i * UNIT_SIZE, SCREEN_WIDTH, i * UNIT_SIZE);
-			}
+			// for (int i = 0; i < SCREEN_HEIGHT / UNIT_SIZE; i++) {
+			// g.drawLine(i * UNIT_SIZE, 0, i * UNIT_SIZE, SCREEN_HEIGHT);
+			// g.drawLine(0, i * UNIT_SIZE, SCREEN_WIDTH, i * UNIT_SIZE);
+			// }
 			g.setColor(Color.red);
 			g.fillOval(appleX, appleY, UNIT_SIZE, UNIT_SIZE);
 
@@ -68,7 +69,8 @@ public class GamePanel extends JPanel implements ActionListener {
 					(SCREEN_WIDTH - metrics.stringWidth("Score: " + applesEaten)) / 2,
 					g.getFont().getSize());
 		} else {
-			gameOver(g);
+			if (!gameOverHandled)
+				gameOver(g);
 		}
 	}
 
@@ -132,6 +134,38 @@ public class GamePanel extends JPanel implements ActionListener {
 	}
 
 	public void gameOver(Graphics g) {
+		gameOverHandled = true;
+
+		Panel panel = new Panel();
+		panel.setLayout(null);
+		// panel.setBackground(Color.white);
+		panel.setBounds(200, 350, 200, 200);
+		System.out.println(panel.getLocation());
+		Button restartBtn = new Button("Restart");
+		restartBtn.setBounds(50, 10, 100, 40);
+		restartBtn.setBackground(Color.red);
+		restartBtn.setForeground(Color.black);
+		restartBtn.setFont(new Font("Hack", Font.BOLD, 16));
+		restartBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				switchToGameMenu();
+			}
+		});
+		Button exitBtn = new Button("Exit");
+		exitBtn.setBounds(50, 60, 100, 40);
+		exitBtn.setBackground(Color.red);
+		exitBtn.setForeground(Color.black);
+		exitBtn.setFont(new Font("Hack", Font.BOLD, 16));
+		exitBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
+			}
+		});
+
+		panel.add(restartBtn);
+		panel.add(exitBtn);
+		this.add(panel);
+		// this.validate();
 		// game over text display
 		g.setFont(new Font("Hack", Font.BOLD, 75));
 		g.setColor(Color.red);
@@ -144,6 +178,15 @@ public class GamePanel extends JPanel implements ActionListener {
 		g.drawString("Score: " + applesEaten,
 				(SCREEN_WIDTH - metrics2.stringWidth("Score: " + applesEaten)) / 2,
 				g.getFont().getSize());
+	}
+
+	public void switchToGameMenu() {
+		Container parent = this.getParent();
+		parent.remove(this);
+		parent.add(new GameMenu());
+		parent.revalidate();
+		parent.repaint();
+
 	}
 
 	@Override
