@@ -13,6 +13,7 @@ public class GameMenu extends Panel implements ActionListener {
 	private HighScoreManager highScoresManager;
 
 	GameMenu(HighScoreManager highScoreManager) {
+		this.highScoresManager = highScoreManager;
 		this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
 		this.setBackground(Color.black);
 		this.setFocusable(true);
