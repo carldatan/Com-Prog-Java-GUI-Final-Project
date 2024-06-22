@@ -14,7 +14,7 @@ public class HighScoreManager {
 		highScores.add(new HighScoreEntry(name, score));
 		Collections.sort(highScores);
 		if (highScores.size() > MAX_HIGH_SCORES) {
-			highScores = highScores.subList(0, MAX_HIGH_SCORES);
+			highScores.remove(5);
 		}
 	}
 
