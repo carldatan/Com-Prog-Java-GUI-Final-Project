@@ -10,7 +10,7 @@ public class GameMenu extends Panel implements ActionListener {
 	static final int SCREEN_HEIGHT = 600;
 	Color color;
 	Random random = new Random();
-	HighScoreManager highScoresManager = new HighScoreManager();
+	private HighScoreManager highScoresManager;
 
 	GameMenu(HighScoreManager highScoreManager) {
 		this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
