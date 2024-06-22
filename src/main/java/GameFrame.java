@@ -3,8 +3,11 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
 public class GameFrame extends Frame implements WindowListener {
+	HighScoreManager highScoreManager = new HighScoreManager();
+
 	GameFrame() {
-		this.add(new GamePanel());
+
+		this.add(new GameMenu(highScoreManager));
 		this.setTitle("Snake");
 		addWindowListener(this);
 		this.setVisible(true);

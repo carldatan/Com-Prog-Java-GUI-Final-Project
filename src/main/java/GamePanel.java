@@ -21,14 +21,45 @@ public class GamePanel extends JPanel implements ActionListener {
 	Timer timer;
 	Random random;
 	boolean gameOverHandled = false;
+	String name = "";
+	HighScoreManager highScoreManager;
 
-	GamePanel() {
+	GamePanel(HighScoreManager highScoreManager) {
+		this.highScoreManager = highScoreManager;
 		random = new Random();
 		this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
+		this.setSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
 		this.setBackground(Color.black);
 		this.setFocusable(true);
 		this.addKeyListener(new MyKeyAdapter());
-		startGame();
+		requestFocusInWindow();
+		Label label = new Label("Enter Name:");
+		label.setFont(new Font("Hack", Font.BOLD, 30));
+		label.setForeground(Color.red);
+		TextField txt = new TextField();
+		txt.setPreferredSize(new Dimension(200, 50));
+		txt.setBackground(Color.black);
+		txt.setForeground(Color.red);
+		txt.setFont(new Font("Hack", Font.BOLD, 20));
+		Button startBtn = new Button("Start");
+		startBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				name = txt.getText();
+				if (name.length() > 0) {
+					remove(txt);
+					remove(startBtn);
+					remove(label);
+					startGame();
+
+				}
+			}
+		});
+		this.add(label);
+		this.add(txt);
+		this.add(startBtn);
+		if (name.length() > 0) {
+			startGame();
+		}
 	}
 
 	public void startGame() {
@@ -40,7 +71,8 @@ public class GamePanel extends JPanel implements ActionListener {
 
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		draw(g);
+		if (name.length() > 0)
+			draw(g);
 	}
 
 	public void draw(Graphics g) {
@@ -115,19 +147,21 @@ public class GamePanel extends JPanel implements ActionListener {
 
 	public void checkCollision() {
 		// head and body collision check
-		for (int i = bodyParts; i > 0; i--) {
-			if ((x[0] == x[i]) && (y[0] == y[i])) {
-				running = false;
+		if (running) {
+			for (int i = bodyParts; i > 0; i--) {
+				if ((x[0] == x[i]) && (y[0] == y[i])) {
+					running = false;
+				}
 			}
+			if (x[0] < 0)
+				running = false;
+			if (x[0] > SCREEN_WIDTH)
+				running = false;
+			if (y[0] < 0)
+				running = false;
+			if (y[0] > SCREEN_HEIGHT)
+				running = false;
 		}
-		if (x[0] < 0)
-			running = false;
-		if (x[0] > SCREEN_WIDTH)
-			running = false;
-		if (y[0] < 0)
-			running = false;
-		if (y[0] > SCREEN_HEIGHT)
-			running = false;
 
 		if (!running)
 			timer.stop();
@@ -135,7 +169,8 @@ public class GamePanel extends JPanel implements ActionListener {
 
 	public void gameOver(Graphics g) {
 		gameOverHandled = true;
-
+		highScoreManager.addHighScore(name, applesEaten);
+		System.out.println(highScoreManager.getScores());
 		Panel panel = new Panel();
 		panel.setLayout(null);
 		// panel.setBackground(Color.white);
@@ -183,7 +218,7 @@ public class GamePanel extends JPanel implements ActionListener {
 	public void switchToGameMenu() {
 		Container parent = this.getParent();
 		parent.remove(this);
-		parent.add(new GameMenu());
+		parent.add(new GameMenu(highScoreManager));
 		parent.revalidate();
 		parent.repaint();
 
@@ -202,6 +237,7 @@ public class GamePanel extends JPanel implements ActionListener {
 	public class MyKeyAdapter extends KeyAdapter {
 		@Override
 		public void keyPressed(KeyEvent e) {
+			System.out.println("exe");
 			switch (e.getKeyCode()) {
 				case KeyEvent.VK_LEFT:
 					if (direction != 'R')
