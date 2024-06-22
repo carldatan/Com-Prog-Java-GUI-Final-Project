@@ -47,7 +47,6 @@ public class GameLeaderBoards extends Panel {
 			g.drawString(entry.name + ": " + entry.score, 180, y);
 			g.setColor(Color.red);
 			y += 40;
-			repaint();
 			revalidate();
 		}
 
