@@ -4,7 +4,8 @@ import java.awt.event.*;
 public class GameLeaderBoards extends Panel {
 	private HighScoreManager highScoreManager;
 
-	GameLeaderBoards(HighScoreManager highScoreManager) {
+	GameLeaderBoards(HighScoreManager highScoreManager, GameDifficulty gameDifficulty) {
+		this.gameDifficulty = gameDifficulty;
 		this.highScoreManager = highScoreManager;
 		this.setLayout(null);
 		this.setPreferredSize(new Dimension(GameMenu.SCREEN_WIDTH, GameMenu.SCREEN_HEIGHT));
@@ -26,7 +27,7 @@ public class GameLeaderBoards extends Panel {
 	public void switchToGameMenu() {
 		Container parent = this.getParent();
 		parent.remove(this);
-		parent.add(new GameMenu(highScoreManager));
+		parent.add(new GameMenu(highScoreManager, gameDifficulty));
 		parent.revalidate();
 		parent.repaint();
 	}
@@ -44,7 +45,7 @@ public class GameLeaderBoards extends Panel {
 		int y = 100;
 		for (HighScoreEntry entry : highScoreManager.getScores()) {
 			System.out.println(entry.name);
-			g.drawString(entry.name + ": " + entry.score, 180, y);
+			g.drawString(entry.name + ": " + entry.score + " Difficulty: " + gameDifficulty.getDifficulty(), 90, y);
 			g.setColor(Color.red);
 			y += 40;
 			revalidate();
