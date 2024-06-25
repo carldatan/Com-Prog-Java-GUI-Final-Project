@@ -3,7 +3,7 @@ import java.awt.event.*;
 import java.util.Random;
 import javax.swing.*;
 
-public class GamePanel extends Panel implements ActionListener {
+public class GamePanel extends JPanel implements ActionListener {
 
 	static final int SCREEN_WIDTH = 600;
 	static final int SCREEN_HEIGHT = 600;
@@ -103,14 +103,13 @@ public class GamePanel extends Panel implements ActionListener {
 		timer.start();
 	}
 
-	// public void paintComponent(Graphics g) {
-	// super.paintComponent(g);
-	// if (name.length() > 0)
-	// paint(g);
-	// }
+	public void paintComponent(Graphics g) {
+	super.paintComponent(g);
+	if (name.length() > 0)
+	draw(g);
+	}
 
-	@Override
-	public void paint(Graphics g) {
+	public void draw(Graphics g) {
 		if (running) {
 			// for (int i = 0; i < SCREEN_HEIGHT / UNIT_SIZE; i++) {
 			// g.drawLine(i * UNIT_SIZE, 0, i * UNIT_SIZE, SCREEN_HEIGHT);

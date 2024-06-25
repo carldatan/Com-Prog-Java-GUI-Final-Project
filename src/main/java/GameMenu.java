@@ -105,12 +105,9 @@ public class GameMenu extends Panel implements ActionListener {
 			return;
 		}
 		parent.remove(this);
-		GamePanel gamePanel = new GamePanel(highScoresManager, gameDifficulty);
-		parent.add(gamePanel);
 		GameOptions newgameOptions = new GameOptions(highScoresManager, gameDifficulty);
 		parent.add(newgameOptions);
 		parent.validate();
-		gamePanel.requestFocusInWindow();
 		newgameOptions.requestFocusInWindow();
 		parent.repaint();
 	}
