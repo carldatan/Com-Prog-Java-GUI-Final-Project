@@ -11,9 +11,11 @@ public class GameMenu extends Panel implements ActionListener {
 	Color color;
 	Random random = new Random();
 	private HighScoreManager highScoresManager;
+	GameDifficulty gameDifficulty;
 
-	GameMenu(HighScoreManager highScoreManager) {
+	GameMenu(HighScoreManager highScoreManager, GameDifficulty gameDifficulty) {
 		this.highScoresManager = highScoreManager;
+		this.gameDifficulty = gameDifficulty;
 		this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
 		this.setBackground(Color.black);
 		this.setFocusable(true);
@@ -90,7 +92,7 @@ public class GameMenu extends Panel implements ActionListener {
 	public void switchToNewGame() {
 		Container parent = this.getParent();
 		parent.remove(this);
-		GamePanel gamePanel = new GamePanel(highScoresManager);
+		GamePanel gamePanel = new GamePanel(highScoresManager, gameDifficulty);
 		parent.add(gamePanel);
 		parent.validate();
 		gamePanel.requestFocusInWindow();
@@ -98,12 +100,12 @@ public class GameMenu extends Panel implements ActionListener {
 	}
 
 	public void switchToOptions() {
-		ontainer parent = this.getParent();
+		Container parent = this.getParent();
 		if (parent == null) {
 			return;
 		}
 		parent.remove(this);
-		GamePanel gamePanel = new GamePanel(highScoresManager);
+		GamePanel gamePanel = new GamePanel(highScoresManager, gameDifficulty);
 		parent.add(gamePanel);
 		GameOptions newgameOptions = new GameOptions(highScoresManager, gameDifficulty);
 		parent.add(newgameOptions);

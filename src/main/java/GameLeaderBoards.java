@@ -3,6 +3,7 @@ import java.awt.event.*;
 
 public class GameLeaderBoards extends Panel {
 	private HighScoreManager highScoreManager;
+	GameDifficulty gameDifficulty;
 
 	GameLeaderBoards(HighScoreManager highScoreManager, GameDifficulty gameDifficulty) {
 		this.gameDifficulty = gameDifficulty;

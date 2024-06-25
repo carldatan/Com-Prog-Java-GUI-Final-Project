@@ -1,12 +1,12 @@
-import java.awt.Frame;
+import java.awt.*;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
 public class GameFrame extends Frame implements WindowListener {
 	HighScoreManager highScoreManager = new HighScoreManager();
+	GameDifficulty gameDifficulty = new GameDifficulty("Easy");
 
 	GameFrame() {
-
 		this.add(new GameMenu(highScoreManager, gameDifficulty), BorderLayout.CENTER);
 		this.setTitle("Snake");
 		addWindowListener(this);
