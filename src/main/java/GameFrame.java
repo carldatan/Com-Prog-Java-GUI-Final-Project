@@ -7,7 +7,7 @@ public class GameFrame extends Frame implements WindowListener {
 
 	GameFrame() {
 
-		this.add(new GameMenu(highScoreManager));
+		this.add(new GameMenu(highScoreManager, gameDifficulty), BorderLayout.CENTER);
 		this.setTitle("Snake");
 		addWindowListener(this);
 		this.setVisible(true);
