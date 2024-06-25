@@ -3,13 +3,13 @@ import java.awt.event.*;
 import java.util.Random;
 import javax.swing.*;
 
-public class GamePanel extends JPanel implements ActionListener {
+public class GamePanel extends Panel implements ActionListener {
 
 	static final int SCREEN_WIDTH = 600;
 	static final int SCREEN_HEIGHT = 600;
 	static final int UNIT_SIZE = 25;
 	static final int GAME_UNITS = (SCREEN_WIDTH * SCREEN_HEIGHT) / UNIT_SIZE;
-	static final int DELAY = 75;
+	static int delay;
 	final int x[] = new int[GAME_UNITS];
 	final int y[] = new int[GAME_UNITS];
 	int bodyParts = 6;
@@ -23,8 +23,10 @@ public class GamePanel extends JPanel implements ActionListener {
 	boolean gameOverHandled = false;
 	String name = "";
 	HighScoreManager highScoreManager;
+	GameDifficulty gameDifficulty;
 
-	GamePanel(HighScoreManager highScoreManager) {
+	GamePanel(HighScoreManager highScoreManager, GameDifficulty gameDifficulty) {
+		this.gameDifficulty = gameDifficulty;
 		this.highScoreManager = highScoreManager;
 		random = new Random();
 		this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
@@ -33,6 +35,23 @@ public class GamePanel extends JPanel implements ActionListener {
 		this.setFocusable(true);
 		this.addKeyListener(new MyKeyAdapter());
 		requestFocusInWindow();
+		switch (gameDifficulty.getDifficulty()) {
+			case "Easy":
+				delay = 100;
+				break;
+			case "Medium":
+				delay = 75;
+				break;
+			case "Hard":
+				delay = 50;
+				break;
+
+			default:
+				delay = 100;
+				break;
+		}
+		System.out.println("Game Difficulty: " + gameDifficulty.getDifficulty() + " Delay: " + delay);
+
 		Label label = new Label("Enter Name:");
 		label.setFont(new Font("Hack", Font.BOLD, 30));
 		label.setForeground(Color.red);
@@ -42,40 +61,56 @@ public class GamePanel extends JPanel implements ActionListener {
 		txt.setForeground(Color.red);
 		txt.setFont(new Font("Hack", Font.BOLD, 20));
 		Button startBtn = new Button("Start");
+		startBtn.setPreferredSize(new Dimension(100, 50));
+		startBtn.setForeground(Color.red);
+		startBtn.setFont(new Font("Hack", Font.BOLD, 20));
 		startBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				name = txt.getText();
-				if (name.length() > 0) {
+
+				if (name.length() > 15) {
+					Label tempLabel = new Label("Please Enter a name of less than 15 characters");
+					add(tempLabel);
+					revalidate();
+					repaint();
+
+					// Create a timer that removes the label after 3 seconds
+					new Timer(3000, new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							remove(tempLabel);
+							revalidate();
+							repaint();
+						}
+					}).start();
+				} else if (name.length() > 0 && name.length() <= 15) {
 					remove(txt);
 					remove(startBtn);
 					remove(label);
 					startGame();
-
 				}
 			}
 		});
 		this.add(label);
 		this.add(txt);
 		this.add(startBtn);
-		if (name.length() > 0) {
-			startGame();
-		}
 	}
 
 	public void startGame() {
 		newApple();
 		running = true;
-		timer = new Timer(DELAY, this);
+		timer = new Timer(delay, this);
 		timer.start();
 	}
 
-	public void paintComponent(Graphics g) {
-		super.paintComponent(g);
-		if (name.length() > 0)
-			draw(g);
-	}
+	// public void paintComponent(Graphics g) {
+	// super.paintComponent(g);
+	// if (name.length() > 0)
+	// paint(g);
+	// }
 
-	public void draw(Graphics g) {
+	@Override
+	public void paint(Graphics g) {
 		if (running) {
 			// for (int i = 0; i < SCREEN_HEIGHT / UNIT_SIZE; i++) {
 			// g.drawLine(i * UNIT_SIZE, 0, i * UNIT_SIZE, SCREEN_HEIGHT);
@@ -100,7 +135,7 @@ public class GamePanel extends JPanel implements ActionListener {
 			g.drawString("Score: " + applesEaten,
 					(SCREEN_WIDTH - metrics.stringWidth("Score: " + applesEaten)) / 2,
 					g.getFont().getSize());
-		} else {
+		} else if (!running && name.length() <= 15 && name.length() > 0) {
 			if (!gameOverHandled)
 				gameOver(g);
 		}
@@ -170,7 +205,8 @@ public class GamePanel extends JPanel implements ActionListener {
 	public void gameOver(Graphics g) {
 		gameOverHandled = true;
 		highScoreManager.addHighScore(name, applesEaten);
-		System.out.println(highScoreManager.getScores());
+		System.out.println("HighScoreManager instance: " + highScoreManager);
+		System.out.println("Scores after adding: " + highScoreManager.getScores());
 		Panel panel = new Panel();
 		panel.setLayout(null);
 		// panel.setBackground(Color.white);
@@ -218,10 +254,9 @@ public class GamePanel extends JPanel implements ActionListener {
 	public void switchToGameMenu() {
 		Container parent = this.getParent();
 		parent.remove(this);
-		parent.add(new GameMenu(highScoreManager));
+		parent.add(new GameMenu(highScoreManager, gameDifficulty));
 		parent.revalidate();
 		parent.repaint();
-
 	}
 
 	@Override
