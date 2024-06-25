@@ -46,6 +46,7 @@ public class GameMenu extends Panel implements ActionListener {
 		optBtn.setFont(new Font("Hack", Font.BOLD, 16));
 		optBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				switchToOptions();
 			}
 		});
 		exitBtn.setBounds(50, 160, 100, 40);
@@ -97,19 +98,25 @@ public class GameMenu extends Panel implements ActionListener {
 	}
 
 	public void switchToOptions() {
-		Container parent = this.getParent();
+		ontainer parent = this.getParent();
+		if (parent == null) {
+			return;
+		}
 		parent.remove(this);
 		GamePanel gamePanel = new GamePanel(highScoresManager);
 		parent.add(gamePanel);
+		GameOptions newgameOptions = new GameOptions(highScoresManager, gameDifficulty);
+		parent.add(newgameOptions);
 		parent.validate();
 		gamePanel.requestFocusInWindow();
+		newgameOptions.requestFocusInWindow();
 		parent.repaint();
 	}
 
 	public void switchToLeaderboards() {
 		Container parent = this.getParent();
 		parent.remove(this);
-		GameLeaderBoards gameLeaderBoards = new GameLeaderBoards(highScoresManager);
+		GameLeaderBoards gameLeaderBoards = new GameLeaderBoards(highScoresManager, gameDifficulty);
 		parent.add(gameLeaderBoards);
 		parent.validate();
 		gameLeaderBoards.requestFocusInWindow();
