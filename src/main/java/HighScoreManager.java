@@ -10,7 +10,6 @@ public class HighScoreManager {
 	}
 
 	public void addHighScore(String name, int score) {
-		System.out.println("addedHighScore");
 		highScores.add(new HighScoreEntry(name, score));
 		Collections.sort(highScores);
 		if (highScores.size() > MAX_HIGH_SCORES) {

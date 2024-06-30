@@ -50,7 +50,6 @@ public class GamePanel extends JPanel implements ActionListener {
 				delay = 100;
 				break;
 		}
-		System.out.println("Game Difficulty: " + gameDifficulty.getDifficulty() + " Delay: " + delay);
 
 		Label label = new Label("Enter Name:");
 		label.setFont(new Font("Hack", Font.BOLD, 30));
@@ -104,9 +103,9 @@ public class GamePanel extends JPanel implements ActionListener {
 	}
 
 	public void paintComponent(Graphics g) {
-	super.paintComponent(g);
-	if (name.length() > 0)
-	draw(g);
+		super.paintComponent(g);
+		if (name.length() > 0)
+			draw(g);
 	}
 
 	public void draw(Graphics g) {
@@ -204,13 +203,10 @@ public class GamePanel extends JPanel implements ActionListener {
 	public void gameOver(Graphics g) {
 		gameOverHandled = true;
 		highScoreManager.addHighScore(name, applesEaten);
-		System.out.println("HighScoreManager instance: " + highScoreManager);
-		System.out.println("Scores after adding: " + highScoreManager.getScores());
 		Panel panel = new Panel();
 		panel.setLayout(null);
 		// panel.setBackground(Color.white);
 		panel.setBounds(200, 350, 200, 200);
-		System.out.println(panel.getLocation());
 		Button restartBtn = new Button("Restart");
 		restartBtn.setBounds(50, 10, 100, 40);
 		restartBtn.setBackground(Color.red);
@@ -271,7 +267,6 @@ public class GamePanel extends JPanel implements ActionListener {
 	public class MyKeyAdapter extends KeyAdapter {
 		@Override
 		public void keyPressed(KeyEvent e) {
-			System.out.println("exe");
 			switch (e.getKeyCode()) {
 				case KeyEvent.VK_LEFT:
 					if (direction != 'R')

@@ -45,8 +45,8 @@ public class GameLeaderBoards extends Panel {
 		g.setColor(Color.red);
 		int y = 100;
 		for (HighScoreEntry entry : highScoreManager.getScores()) {
-			System.out.println(entry.name);
-			g.drawString(entry.name + ": " + entry.score + " Difficulty: " + gameDifficulty.getDifficulty(), 90, y);
+			g.drawString(entry.name + ": " + entry.score + " Difficulty: " + gameDifficulty.getDifficulty(),
+					90, y);
 			g.setColor(Color.red);
 			y += 40;
 			revalidate();

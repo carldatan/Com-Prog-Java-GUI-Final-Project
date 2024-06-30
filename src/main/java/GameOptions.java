@@ -79,7 +79,6 @@ public class GameOptions extends Panel {
 
 	public void switchToGameMenu() {
 		Container parent = this.getParent();
-		System.out.println(gameDifficulty.getDifficulty());
 		parent.remove(this);
 		parent.add(new GameMenu(highScoreManager, gameDifficulty));
 		parent.revalidate();
