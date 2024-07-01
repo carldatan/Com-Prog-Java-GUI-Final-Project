@@ -38,14 +38,14 @@ This is the final project for the Computer Programming Java GUI course. The proj
 ### Linux
 #### In your terminal enter these commands
 1. Clone the repository:
-    ``bash
-    git clone https://github.com/carldatan/Com-Prog-Java-GUI-Final-Project.git
+ ```bash
+ git clone https://github.com/carldatan/Com-Prog-Java-GUI-Final-Project.git
     ```
-2. Navigate to the project directory:
+3. Navigate to the project directory:
     ```bash
     cd Com-Prog-Java-GUI-Final-Project
     ```
-3. Build the project using Gradle:
+4. Build the project using Gradle:
     ```bash
     ./gradlew build
     ```
