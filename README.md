@@ -40,7 +40,7 @@ This is the final project for the Computer Programming Java GUI course. The proj
 1. Clone the repository:
  ```bash
  git clone https://github.com/carldatan/Com-Prog-Java-GUI-Final-Project.git
-    ```
+  ```
 3. Navigate to the project directory:
     ```bash
     cd Com-Prog-Java-GUI-Final-Project
